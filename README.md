@@ -18,8 +18,6 @@ Handles programmatic validation and back-end background string compilation:
 * **Automated Message ID:** Generates unique, 10-digit system identification keys for every entry.
 * **Data Verification Hashing:** Compiles a custom uppercase signature signature (e.g., `00:0:HITONIGHT`) to track transactional records.
 
----
-
  Unit Testing Scenarios (JUnit 5)
 
 Our automated unit testing suite ensures data validation checks work flawlessly across both positive and negative execution paths:
@@ -31,15 +29,11 @@ Our automated unit testing suite ensures data validation checks work flawlessly 
 | **Message ID** | Confirms generated tracking sequence contains exactly 10 digits. | N/A |
 | **Action Code** | Confirms proper console response text routing layouts for choices 1, 2, and 3. | N/A |
 
----
-
 ## 💻 Running the Part 2 Test Suite
 
 1. Open the project workspace inside **NetBeans**.
 2. Locate the test directory folder.
 3. Right-click **`MessageUtilTest.java`** or **`MessageTest.java`** and click **Test File** (or press `Ctrl + F6`) to execute the verification checks.
-
----
 
 ## 📚 Academic References & Collaboration
 
