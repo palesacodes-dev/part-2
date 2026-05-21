@@ -34,14 +34,15 @@ public class Quickchatapp {
                         String user = input.nextLine();
                         System.out.print("Enter Password: ");
                         String pass = input.nextLine();
-
+                        System.out.print("Enter cell phone number: ");
+                        String phoneNumber = input.nextLine();
                         String regStatus = auth.registerUser(user, pass, fName, lName);
                         System.out.println("\n" + regStatus);
-
+                               
                         if (regStatus.equals("Username and Password successfully captured.")) {
                             // The specific personalized welcome you requested
                             System.out.println("Welcome " + fName + " it's nice to meet you!");
-                            loginStatus = true;
+                           
                         }
                         break;
 
@@ -123,9 +124,10 @@ public class Quickchatapp {
                                         MessageList.add(message);
                                         switch (action) {
                                             case 1 -> {
-                                                System.out.println("Message successfully sent");
+                                                System.out.println("\nMessage successfully sent.\n");
                                                 System.out.println(message.getFormattedDetails());
                                                 Message.addMessage(message);
+                                                input.nextLine();
                                                 break;
                                             }
                                             case 2 -> {
@@ -133,13 +135,16 @@ public class Quickchatapp {
                                                 int discard = input.nextInt();
                                                 if (discard == 0) {
                                                     MessageList.removeLast();
+                                                    System.out.println("\nMessage successfully discarded.\n");
+                                          
                                                 }
-
+                                                 input.nextLine();
                                             }
                                             case 3 -> {
-                                                System.out.println("Message successfully stored");
+                                                System.out.println("\nMessage successfully stored.\n");
                                                 System.out.println(message.getFormattedDetails());
                                                 Message.addMessage(message);
+                                                 input.nextLine();
                                             }
                                         }
 
@@ -162,7 +167,7 @@ public class Quickchatapp {
                         System.out.println("Access Denied. Please restart to try again.");
                     }
                 }
-                input.close();
+                
             }
         }
     }
