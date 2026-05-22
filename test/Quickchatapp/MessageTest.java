@@ -8,9 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageTest {
 
-    // ==========================================
+    
     //  MESSAGE LENGTH TESTS
-    // ==========================================
     
     @Test
     public void testValidateMessageLength_Success() {
@@ -37,9 +36,8 @@ public class MessageTest {
         assertEquals(expectedMessage, result);
     }
 
-    // ==========================================
+    
     //  RECIPIENT NUMBER TESTS
-    // ==========================================
     
     @Test
     public void testCheckRecipientCell_Success() {
@@ -61,9 +59,8 @@ public class MessageTest {
         assertEquals(expectedFailureMessage, result);
     }
 
-    // ==========================================
+    
     //  MESSAGE HASH TEST
-    // ==========================================
     
     @Test
     public void testCreateMessageHash() {
@@ -78,9 +75,8 @@ public class MessageTest {
         assertEquals("00:0:HITONIGHT", resultHash);
     }
 
-    // ==========================================
+    
     //  AUTOMATED MESSAGE ID TEST
-    // ==========================================
     
     @Test
     public void testGenerateMessageID() {
@@ -90,9 +86,9 @@ public class MessageTest {
         assertEquals(10, generatedId.length(), "The generated system ID must be exactly 10 digits long.");
     }
 
-    // ==========================================
+    
     // ACTION CODE STATUS TESTS
-    // ==========================================
+    
     
     @Test
     public void testSentMessage_Option1() {
