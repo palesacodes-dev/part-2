@@ -144,6 +144,7 @@ public class Quickchatapp {
                                                 System.out.println("\nMessage successfully stored.\n");
                                                 System.out.println(message.getFormattedDetails());
                                                 Message.addMessage(message);
+                                                Message.saveJsonFile(message);
                                                  input.nextLine();
                                             }
                                         }
@@ -158,7 +159,58 @@ public class Quickchatapp {
                                     System.out.println("Total Sent: " + Message.returnTotalMessages());
                                     appRunning = false; // Stops the loop and exits
                                 }
-
+                                 case 4 -> {
+                                  // --- PART 3 SUBMENU LOOP ---
+                                boolean subMenu = true;
+                                 while (subMenu) {
+                        System.out.println("\n--- STORED MESSAGES MANAGEMENT ---");
+                        System.out.println("a) Display sender and recipient of all stored messages");
+                        System.out.println("b) Display the longest stored message");
+                        System.out.println("c) Search for a message ID");
+                        System.out.println("d) Search all messages stored for a recipient");
+                        System.out.println("e) Delete a message using the message hash");
+                        System.out.println("f) Display full report");
+                        System.out.println("g) Return to Main Menu");
+                        System.out.print("Selection: ");
+                        
+                        String option = input.nextLine().toLowerCase().trim();
+                        
+                        switch (option) {
+                            case "a" -> Message.displayAllStored();
+                            case "b" -> {
+                                System.out.println("\nLongest Stored Message: \"" + Message.getLongestStoredMessage() + "\"");
+                            }
+                            case "c" -> {
+                                System.out.print("Enter Message ID to query: ");
+                                String idInput = input.nextLine();
+                                System.out.println("Query Result: " + Message.searchByMessageID(idInput));
+                            }
+                            case "d" -> {
+                                System.out.print("Enter Target Recipient Number: ");
+                                String recInput = input.nextLine();
+                                ArrayList<String> hits = Message.searchAllStoredForRecipient(recInput);
+                                System.out.println("\nStored results for " + recInput + ":");
+                                for (String text : hits) {
+                                    System.out.println("- " + text);
+                                }
+                            }
+                            case "e" -> {
+                                System.out.print("Enter Unique Message Hash Code: ");
+                                String hashInput = input.nextLine();
+                                boolean deleted = Message.deleteMessageByHash(hashInput);
+                                if (deleted) {
+                                    System.out.println("Status: Target record dropped from arrays successfully.");
+                                } else {
+                                    System.out.println("Status Error: Hash reference index matches nothing.");
+                                }
+                            }
+                            case "f" -> Message.printStoredReport();
+                            case "g" -> subMenu = false; // Disconnects inner menu loop, dropping back to main menu choice
+                            default -> System.out.println("Selection error. Input letters a through g.");
+                        }
+                    }
+                }
+                
                                 default ->
                                     System.out.println("Feature coming soon or invalid option.");
                             }

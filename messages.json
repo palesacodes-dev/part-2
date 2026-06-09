@@ -1,0 +1,16 @@
+[
+  {
+    "recipient": "+27718971865",
+    "id": "810210888497",
+    "text": "Hi,How are you?",
+    "hash": "81:0:HI,HOWYOU",
+    "status": 3
+  },
+  {
+    "recipient": "+27826403510",
+    "id": "101046358393",
+    "text": "im hungry",
+    "hash": "10:0:IMHUNGRY",
+    "status": 3
+  }
+]
