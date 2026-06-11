@@ -9,6 +9,8 @@ public class Login {
     private String registeredPassword;
     private String firstName;
     private String lastName;
+    private String phoneNumber;
+   
 
     // 1. Method to check Username: contains "_" and is <= 5 characters
     public boolean checkUserName(String username) {
@@ -25,7 +27,7 @@ public class Login {
     }
 
     // 3. Register Method: Returns the specific messages from the task table
-    public String registerUser(String user, String pass, String fName, String lName) {
+    public String registerUser(String user, String pass, String fName, String lName, String phoneNumber) {
         if (!checkUserName(user)) {
             return "Username is not correctly formatted; please ensure that your username contains an underscore and is no more than five characters in length.";
         } 
@@ -38,6 +40,7 @@ public class Login {
         this.registeredPassword = pass;
         this.firstName = fName;
         this.lastName = lName;
+        this.phoneNumber = phoneNumber;
         
         return "Username and Password successfully captured.";
     }

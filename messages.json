@@ -1,16 +1,18 @@
 [
   {
+    "sender": "Pale_",
     "recipient": "+27718971865",
-    "id": "810210888497",
-    "text": "Hi,How are you?",
-    "hash": "81:0:HI,HOWYOU",
+    "id": "5191743129",
+    "text": "hi, how are you?",
+    "hash": "51:0:HI,YOU",
     "status": 3
   },
   {
+    "sender": "Pale_",
     "recipient": "+27826403510",
-    "id": "101046358393",
-    "text": "im hungry",
-    "hash": "10:0:IMHUNGRY",
+    "id": "3745945459",
+    "text": "Sinzima iskole",
+    "hash": "37:0:SINZIMAISKOLE",
     "status": 3
   }
 ]

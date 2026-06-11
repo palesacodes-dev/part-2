@@ -19,9 +19,9 @@ import org.json.JSONObject;
  * @author Student
  */
 public class Message {
-private static ArrayList<String> sentMessages = new ArrayList<>();
-    private static ArrayList<String> disregardedMessages = new ArrayList<>();
-    private static ArrayList<String> storedMessages = new ArrayList<>();
+    private static ArrayList<Message> sentMessages = new ArrayList<>();
+    private static ArrayList<Message> disregardedMessages = new ArrayList<>();
+    private static ArrayList<Message> storedMessages = new ArrayList<>();
     private static ArrayList<String> messageHashes = new ArrayList<>();
     private static ArrayList<String> messageIDs = new ArrayList<>();
     
@@ -36,6 +36,7 @@ private static ArrayList<String> sentMessages = new ArrayList<>();
     private String messageText;
     private String messageHash;
     private int status;
+    private String sender;
 
     private static int totalMessages = 0;
     private static List<Message> messages = new ArrayList();
@@ -52,7 +53,18 @@ private static ArrayList<String> sentMessages = new ArrayList<>();
             totalMessages++;
         }
     }
-
+    public Message(String id, String recipient, String text, String hash, int status, String sender) {
+        this.messageID = id;
+        this.recipient = recipient;
+        this.messageText = text;
+        this.messageHash = hash;
+        this.status = status;
+        this.sender =sender;
+        if (status == 1) { // Only increment if 'Send' was chosen
+            totalMessages++;
+        }
+    }
+   
     // Default constructor for utility methods
     public Message() {
     }
@@ -95,6 +107,9 @@ private static ArrayList<String> sentMessages = new ArrayList<>();
                 messageID, messageHash, recipient, messageText);
     }
 
+    public String getRecipientAndSenderFormat() {
+        return String.format("Recipient: %s\nSender: %s\n", recipient, sender);
+    }
     public static void printMessages() {
         for (Message m : messages) {
             System.out.println(m.getFormattedDetails());
@@ -105,32 +120,29 @@ private static ArrayList<String> sentMessages = new ArrayList<>();
     public static int returnTotalMessages() {
         return totalMessages;
     }
-     public static void populateArrays(String recipient, String message, String hash, String id, String flag) {
-        messageHashes.add(hash);
-        messageIDs.add(id);
-        allRecipients.add(recipient);
-        allMessages.add(message);
-        allFlags.add(flag);
-        
-        // Categorize into specific state blocks
-        if (flag.equalsIgnoreCase("Sent")) {
-            sentMessages.add(message);
-        } else if (flag.equalsIgnoreCase("Disregard")) {
-            disregardedMessages.add(message);
-        } else if (flag.equalsIgnoreCase("Stored")) {
-            storedMessages.add(message);
+    
+    public static void populateList(){
+        try{
+        storedMessages = new Message().loadMessages(); 
+       
+        for (Message msg : storedMessages){
+           messageHashes.add(msg.messageHash);
+           messageIDs.add(msg.messageID);
+        }
+        if(!storedMessages.isEmpty()){
+           System.out.println("Messages successfully loaded");
+       }
+        }catch (Exception e){
         }
     }
-
     // a. Display sender and recipient of all stored messages
     public static void displayAllStored() {
         System.out.println("\n--- ALL STORED MESSAGES ---");
         boolean found = false;
-        for (int i = 0; i < allMessages.size(); i++) {
-            if (allFlags.get(i).equalsIgnoreCase("Stored")) {
-                System.out.println("Recipient/ID: " + allRecipients.get(i) + " | Message: " + allMessages.get(i));
-                found = true;
-            }
+        for (int i = 0; i < storedMessages.size(); i++) {
+            Message message = storedMessages.get(i);
+            System.out.println(message.getRecipientAndSenderFormat());
+            found = true;
         }
         if (!found) {
             System.out.println("No messages matching 'Stored' status are currently held.");
@@ -142,31 +154,31 @@ private static ArrayList<String> sentMessages = new ArrayList<>();
         if (storedMessages.isEmpty()) {
             return "No stored messages available.";
         }
-        String longest = storedMessages.get(0);
-        for (String msg : storedMessages) {
-            if (msg.length() > longest.length()) {
+        Message longest = storedMessages.get(0);
+        for (Message msg : storedMessages) {
+            if (msg.messageText.length() > longest.messageText.length()) {
                 longest = msg;
             }
         }
-        return longest;
+        return longest.messageText;
     }
 
     // c. Search for a message ID and display corresponding recipient and message
     public static String searchByMessageID(String searchID) {
         for (int i = 0; i < messageIDs.size(); i++) {
             if (messageIDs.get(i).equals(searchID)) {
-                return "Recipient: " + allRecipients.get(i) + " | Message: " + allMessages.get(i);
+                return "Recipient: " + storedMessages.get(i).recipient + " \nMessage: " + storedMessages.get(i).messageText;
             }
         }
         return "Message ID not found.";
     }
 
     // d. Search for all messages stored for a particular recipient
-    public static ArrayList<String> searchAllStoredForRecipient(String recipientNum) {
-        ArrayList<String> results = new ArrayList<>();
-        for (int i = 0; i < allMessages.size(); i++) {
-            if (allRecipients.get(i).equals(recipientNum) && allFlags.get(i).equalsIgnoreCase("Stored")) {
-                results.add(allMessages.get(i));
+    public static ArrayList<Message> searchAllStoredForRecipient(String recipientNum) {
+        ArrayList<Message> results = new ArrayList<>();
+        for (int i = 0; i < storedMessages.size(); i++) {
+            if (storedMessages.get(i).recipient.equals(recipientNum) ) {
+                results.add(storedMessages.get(i));
             }
         }
         return results;
@@ -176,20 +188,9 @@ private static ArrayList<String> sentMessages = new ArrayList<>();
     public static boolean deleteMessageByHash(String searchHash) {
         for (int i = 0; i < messageHashes.size(); i++) {
             if (messageHashes.get(i).equalsIgnoreCase(searchHash)) {
-                String targetMsg = allMessages.get(i);
-                String flagType = allFlags.get(i);
-                
-                // Clear from active specific subsets
-                if (flagType.equalsIgnoreCase("Sent")) sentMessages.remove(targetMsg);
-                else if (flagType.equalsIgnoreCase("Disregard")) disregardedMessages.remove(targetMsg);
-                else if (flagType.equalsIgnoreCase("Stored")) storedMessages.remove(targetMsg);
-                
-                // Drop from primary index tables
-                allRecipients.remove(i);
-                allMessages.remove(i);
+                storedMessages.remove(i);
                 messageHashes.remove(i);
                 messageIDs.remove(i);
-                allFlags.remove(i);
                 return true;
             }
         }
@@ -200,15 +201,10 @@ private static ArrayList<String> sentMessages = new ArrayList<>();
         System.out.println("                 STORED MESSAGES - FULL DETAILS REPORT           ");
         System.out.println("=================================================================");
         boolean checking = false;
-        for (int i = 0; i < allMessages.size(); i++) {
-            if (allFlags.get(i).equalsIgnoreCase("Stored")) {
-                System.out.println("Message ID : " + messageIDs.get(i));
-                System.out.println("Hash Code  : " + messageHashes.get(i));
-                System.out.println("Recipient  : " + allRecipients.get(i));
-                System.out.println("Message Content: \"" + allMessages.get(i) + "\"");
-                System.out.println("-----------------------------------------------------------------");
-                checking = true;
-            }
+        for (int i = 0; i < storedMessages.size(); i++) {
+            Message message  = storedMessages.get(i);
+            System.out.println(message.getFormattedDetails()+"\n");
+            checking = true;
         }
         if (!checking) {
             System.out.println("No records found with status 'Stored'.");
@@ -219,7 +215,7 @@ private static ArrayList<String> sentMessages = new ArrayList<>();
         
     try {
         Path path = Path.of("messages.json");
-        
+        storedMessages.add(message);
         JSONArray array;
         
         if(Files.exists(path) && Files.size(path)>0){
@@ -234,6 +230,7 @@ private static ArrayList<String> sentMessages = new ArrayList<>();
         obj.put("text", message.messageText);
         obj.put("status",message.status);
         obj.put("hash", message.messageHash);
+        obj.put("sender",message.sender);
         
         array.put(obj);
         Files.writeString(path, array.toString(2));
@@ -242,9 +239,27 @@ private static ArrayList<String> sentMessages = new ArrayList<>();
         System.getLogger(Message.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
     }
     }
-    
+    public  ArrayList<Message> loadMessages()throws Exception{
+        String json= Files.readString(Path.of("messages.json"));
+        JSONArray array= new JSONArray(json);
+        ArrayList<Message> messages= new ArrayList<>();
+        for (int i=0; i < array.length(); i++) {
+        JSONObject obj = array.getJSONObject(i);
+        Message message= new Message(
+                obj.getString("id"),
+                obj.getString("recipient"),
+                obj.getString("text"),
+                obj.getString("hash"),
+                obj.getInt("status"),
+                obj.getString("sender")
+        );
+        messages.add(message);
+        
+    }  
+    return messages;
+    }
     // Direct Access hooks for your automated testing file assertions
-    public static ArrayList<String> getSentMessages() { return sentMessages; }
-    public static ArrayList<String> getStoredMessages() { return storedMessages; }
+    public static ArrayList<Message> getSentMessages() { return sentMessages; }
+    public static ArrayList<Message> getStoredMessages() { return storedMessages; }
 }
    

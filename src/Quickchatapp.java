@@ -10,7 +10,7 @@ public class Quickchatapp {
         try (Scanner input = new Scanner(System.in)) {
             Login auth = new Login();
             boolean isRunning = true;
-
+            String sender ="";
             while (isRunning) {
 
                 boolean loginStatus = false;
@@ -36,7 +36,8 @@ public class Quickchatapp {
                         String pass = input.nextLine();
                         System.out.print("Enter cell phone number: ");
                         String phoneNumber = input.nextLine();
-                        String regStatus = auth.registerUser(user, pass, fName, lName);
+                        String regStatus = auth.registerUser(user, pass, fName, lName, phoneNumber);
+                        sender = phoneNumber;
                         System.out.println("\n" + regStatus);
                                
                         if (regStatus.equals("Username and Password successfully captured.")) {
@@ -55,7 +56,11 @@ public class Quickchatapp {
 
                         boolean success = auth.loginUser(logUser, logPass);
                         System.out.println("\n" + auth.returnLoginStatus(success));
-                        loginStatus = true;
+                        if(success){
+                         loginStatus = true;
+                         Message.populateList();
+                        }
+
                         break;
 
                     case "3":
@@ -80,6 +85,7 @@ public class Quickchatapp {
                             System.out.println("1) Send Messages");
                             System.out.println("2) Show recently sent (Coming Soon)");
                             System.out.println("3) Quit & Show Report");
+                            System.out.println("4) Stored Messages");
                             System.out.print("Selection: ");
 
                             int menuChoice = input.nextInt();
@@ -120,7 +126,7 @@ public class Quickchatapp {
                                         System.out.print("1) Send 2) Disregard 3) Store: ");
                                         int action = input.nextInt();
                                         input.nextLine();
-                                        Message message = new Message(id, recipient, text, hash, action);
+                                        Message message = new Message(id, recipient, text, hash, action, sender);
                                         MessageList.add(message);
                                         switch (action) {
                                             case 1 -> {
@@ -143,6 +149,7 @@ public class Quickchatapp {
                                             case 3 -> {
                                                 System.out.println("\nMessage successfully stored.\n");
                                                 System.out.println(message.getFormattedDetails());
+                                      
                                                 Message.addMessage(message);
                                                 Message.saveJsonFile(message);
                                                  input.nextLine();
@@ -186,12 +193,12 @@ public class Quickchatapp {
                                 System.out.println("Query Result: " + Message.searchByMessageID(idInput));
                             }
                             case "d" -> {
-                                System.out.print("Enter Target Recipient Number: ");
+                                System.out.print("Enter  Recipient Number: ");
                                 String recInput = input.nextLine();
-                                ArrayList<String> hits = Message.searchAllStoredForRecipient(recInput);
+                                ArrayList<Message> messages = Message.searchAllStoredForRecipient(recInput);
                                 System.out.println("\nStored results for " + recInput + ":");
-                                for (String text : hits) {
-                                    System.out.println("- " + text);
+                                for (Message text : messages) {
+                                    System.out.println("- " + text.getFormattedDetails());
                                 }
                             }
                             case "e" -> {
