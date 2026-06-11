@@ -1,6 +1,6 @@
-# QuickChatApp — Part 2: Message Management 💬
+# QuickChatApp — Part 3: Message Management 💬
 
-This repository contains **Part 2** of the QuickChatApp development suite, focusing on the core message creation engine, automated data processing utilities, and strict data validation testing guidelines. 
+This repository contains **Part 3** of the QuickChatApp development suite, focusing on the core message creation engine, automated data processing utilities, and strict data validation testing guidelines. 
 
  🛠️ Features & Architecture
 
@@ -29,7 +29,7 @@ Our automated unit testing suite ensures data validation checks work flawlessly 
 | **Message ID** | Confirms generated tracking sequence contains exactly 10 digits. | N/A |
 | **Action Code** | Confirms proper console response text routing layouts for choices 1, 2, and 3. | N/A |
 
-## 💻 Running the Part 2 Test Suite
+## 💻 Running the Part 3 Test Suite
 
 1. Open the project workspace inside **NetBeans**.
 2. Locate the test directory folder.
@@ -45,7 +45,7 @@ THE IIE. 2026. *Software Engineering (SEST6221/W/P) Portfolio of Evidence (POE) 
 ### Peer Collaboration Acknowledgment:
 The development, loop construction, and logic validation structures for the Part 2 Message modules were built in collaborative peer-to-peer programming sessions.
 
-* **Co-Developer / Contributor:** [HLOMLA DLEKEDLA]
+* **Co-Developer / Contributor:**
 
 ### Harvard Citation for Personal Collaboration:
-NGCOBO, P. & [DLEKEDLA,H]. 2026. *QuickChatApp: Part 2 Message Validation and Utility Framework*. (Personal collaboration/Co-authored software code). Unpublished Java Application.
+NGCOBO, P.. 2026. *QuickChatApp: Part 2 Message Validation and Utility Framework*. (Personal collaboration/Co-authored software code). Unpublished Java Application.
